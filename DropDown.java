@@ -1,4 +1,5 @@
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -28,12 +29,15 @@ public class DropDown extends JFrame implements ActionListener {
 
     fontComboBox = new JComboBox();
     fontComboBox.setEditable(true);
-    fontComboBox.addItem("Serif");
-    fontComboBox.addItem("Arial");
-    fontComboBox.addItem("Monospaced");
-    fontComboBox.addItem("Zapfino");
-    fontComboBox.addItem("Verdana");
     fontComboBox.addActionListener(this);
+    
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    String[] names = ge.getAvailableFontFamilyNames();
+    for ( int i=0; i<names.length; i++ )
+    {
+       fontComboBox.addItem(names[i]);
+       
+    }
 
     JPanel p = new JPanel();
     p.add(fontComboBox);
