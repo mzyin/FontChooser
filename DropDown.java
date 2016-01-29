@@ -1,10 +1,11 @@
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,13 +61,24 @@ public class DropDown extends JFrame implements ActionListener {
     size.addItem(48);
     size.addItem(72);
     
+    JButton button = new JButton("Button");
+    button.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            CustomColorChooserDialog dialog = new CustomColorChooserDialog(button);
+            dialog.setVisible(true);
+        }
+    });
     
     JPanel p = new JPanel();
     JPanel s = new JPanel();
+    JPanel c = new JPanel();
     p.add(fontComboBox);
     s.add(size);
+    c.add(button);
     getContentPane().add(p, "West");
     getContentPane().add(s, "East");
+    getContentPane().add(c, "North");
     getContentPane().add(fontLabel, "Center");
   }
 
@@ -95,6 +107,8 @@ public class DropDown extends JFrame implements ActionListener {
   }
 }
 
+           
+        
            
 
 
