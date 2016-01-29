@@ -10,13 +10,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.JApplet;
+
 
 public class DropDown extends JFrame implements ActionListener {
   JLabel fontLabel = new JLabel(
       "The quick brown fox jumps over the lazy dog's back.");
 
   private JComboBox fontComboBox;
+  private JComboBox size;
+  int tsize = 12;
+  String tfont = "Arial";
 
   public DropDown() { 
     setTitle("ComboBoxTest");
@@ -36,19 +39,53 @@ public class DropDown extends JFrame implements ActionListener {
     for ( int i=0; i<names.length; i++ )
     {
        fontComboBox.addItem(names[i]);
-       
     }
 
+    size = new JComboBox();
+    size.setEditable(true);
+    size.addActionListener(this);
+    
+    size.addItem(8);
+    size.addItem(9);
+    size.addItem(10);
+    size.addItem(12);
+    size.addItem(14);
+    size.addItem(16);
+    size.addItem(18);
+    size.addItem(20);
+    size.addItem(22);
+    size.addItem(24);
+    size.addItem(28);
+    size.addItem(36);
+    size.addItem(48);
+    size.addItem(72);
+    
+    
     JPanel p = new JPanel();
+    JPanel s = new JPanel();
     p.add(fontComboBox);
-    getContentPane().add(p, "North");
+    s.add(size);
+    getContentPane().add(p, "West");
+    getContentPane().add(s, "East");
     getContentPane().add(fontLabel, "Center");
   }
 
   public void actionPerformed(ActionEvent evt) {
     JComboBox source = (JComboBox) evt.getSource();
-    String item = (String) source.getSelectedItem();
-    fontLabel.setFont(new Font(item, Font.PLAIN, 12));
+
+    if (source == fontComboBox) 
+    {
+    	String font = (String) source.getSelectedItem();
+    	fontLabel.setFont(new Font(font, Font.PLAIN, tsize));
+    	tfont = font;
+    }
+    
+    if (source == size)
+    {
+    	int Size = (int) source.getSelectedItem();
+    	fontLabel.setFont(new Font(tfont,Font.PLAIN,Size));
+    	tsize = Size;
+    }
   }
  
 
