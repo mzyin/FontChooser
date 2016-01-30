@@ -14,22 +14,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+import java.awt.BorderLayout;
 
 
 public class DropDown extends JFrame implements ActionListener {
   JLabel fontLabel = new JLabel(
       "The quick brown fox jumps over the lazy dog's back.");
 
+
   private JComboBox fontComboBox;
   private JComboBox size;
   int tsize = 12;
   String tfont = "Arial";
   private JButton Button = new JButton("Foreground Color");
+  private JButton BButton = new JButton ("Background Color");
 
 
   public DropDown() { 
-    setTitle("ComboBoxTest");
-    setSize(400, 300);
+    setTitle("Font Chooser");
+    setSize(1500, 1000);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         System.exit(0);
@@ -67,17 +78,30 @@ public class DropDown extends JFrame implements ActionListener {
     size.addItem(72);
    
     Button.addActionListener(new ButtonListener());
+    BButton.addActionListener(new ButtonListener());
     
+   
+    
+    setLayout(null);
     JPanel p = new JPanel();
     JPanel s = new JPanel();
     JPanel f = new JPanel();
+    JPanel b = new JPanel();
     p.add(fontComboBox);
     s.add(size);
+   
     f.add(Button);
-    getContentPane().add(p, "West");
-    getContentPane().add(s, "East");
-    getContentPane().add(f, "North");
-    getContentPane().add(fontLabel, "Center");
+    b.add(BButton);
+    getContentPane().add(p);
+    p.setBounds(200, 100, 300, 100);
+    getContentPane().add(s);
+    s.setBounds(380, 100, 300,200);
+    getContentPane().add(f);
+    f.setBounds(800,100,100,50);
+    getContentPane().add(b);
+    b.setBounds(1010, 100, 100, 50);
+    getContentPane().add(fontLabel);
+    fontLabel.setBounds(400,200,700,500);
   }
 
   public void actionPerformed(ActionEvent evt) {
@@ -104,9 +128,22 @@ public class DropDown extends JFrame implements ActionListener {
 
   private class ButtonListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
-	      Color c = JColorChooser.showDialog(null, "Choose a Color", fontLabel.getForeground());
-	      if (c != null)
-	        fontLabel.setForeground(c);
+	    	  JButton src = (JButton) e.getSource();
+
+	    	    if (src == Button) 
+	    	    {
+	    	    	 Color c = JColorChooser.showDialog(null, "Choose Foreground Color", fontLabel.getForeground());
+	    		      if (c != null)
+	    		        fontLabel.setForeground(c);
+	    	    }
+	    	    if (src == BButton)
+	    	    {
+	    	    	 Color b = JColorChooser.showDialog(null, "Choose Background Color", fontLabel.getBackground());
+	    		      if (b != null)
+	    		    	  fontLabel.setBackground(b);
+	    		      	fontLabel.setOpaque(true);
+	    	    }
+	  
 }
   }
 }
