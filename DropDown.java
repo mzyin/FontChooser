@@ -36,7 +36,10 @@ public class DropDown extends JFrame implements ActionListener {
   String tfont = "Arial";
   private JButton Button = new JButton("Foreground Color");
   private JButton BButton = new JButton ("Background Color");
-
+  private JButton bold = new JButton("B");
+  private JButton italic = new JButton ("I");
+  private JButton underline = new JButton("U");
+ 
 
   public DropDown() { 
     setTitle("Font Chooser");
@@ -79,7 +82,9 @@ public class DropDown extends JFrame implements ActionListener {
    
     Button.addActionListener(new ButtonListener());
     BButton.addActionListener(new ButtonListener());
-    
+    bold.addActionListener(new ButtonListener());
+    italic.addActionListener(new ButtonListener());
+    underline.addActionListener(new ButtonListener());
    
     
     setLayout(null);
@@ -87,11 +92,25 @@ public class DropDown extends JFrame implements ActionListener {
     JPanel s = new JPanel();
     JPanel f = new JPanel();
     JPanel b = new JPanel();
+    JPanel B = new JPanel();
+    
+    JPanel I = new JPanel();
+    JPanel U = new JPanel();
     p.add(fontComboBox);
     s.add(size);
-   
     f.add(Button);
+    
     b.add(BButton);
+    B.add(bold);
+    I.add(italic);
+    U.add(underline);
+    getContentPane().add(B);
+    B.setBounds(600,0,100,100);
+    getContentPane().add(I);
+    getContentPane().add(U);
+    
+    I.setBounds(350,100,50,50);
+    U.setBounds(400,100,50,50);
     getContentPane().add(p);
     p.setBounds(200, 100, 300, 100);
     getContentPane().add(s);
@@ -142,6 +161,10 @@ public class DropDown extends JFrame implements ActionListener {
 	    		      if (b != null)
 	    		    	  fontLabel.setBackground(b);
 	    		      	fontLabel.setOpaque(true);
+	    	    }
+	    	    if (src == bold)
+	    	    {
+	    	    	fontLabel.setFont(getFont().deriveFont(Font.BOLD));
 	    	    }
 	  
 }
