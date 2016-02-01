@@ -10,7 +10,11 @@ public class FontChooser
 	         {
 	             System.out.println( names[i] );
 	         }
-	      }
+	      
+
+		   //Set<String> styles = getAvailableStyles("Arial");
+		      //System.out.println(styles);
+	   }
 	}
 
 
