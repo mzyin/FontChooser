@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
@@ -13,22 +14,37 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 import java.awt.BorderLayout;
+import java.util.*;
+import java.awt.font.TextAttribute;
+import java.text.AttributedString;
+import javax.swing.JTextArea;
+import javax.swing.*;
+import javax.swing.text.*;
+ import java.awt.*;              
+import java.awt.event.*;        
+
 
 
 public class DropDown extends JFrame implements ActionListener {
-  JLabel fontLabel = new JLabel(
-      "The quick brown fox jumps over the lazy dog's back.");
-
+  JTextArea fontLabel = new JTextArea("The quick brown fox jumps over the lazy dog's back. Pack my box with five dozen liquor jugs."
+	  + " Jackdaws love my big sphinx of quartz."
+      + " Mr. Jock, TV quiz PhD, bags few lynx."
+      + " abcdefghijklmnopqrstuvwxyz"
+      + " ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      + " 01234567890"
+      + " €†™´¸¢©¤°÷½¼¾>¡¿«‘’<¯µ ·¬ªº¶±£»®§­¹²³ß×™¨¥"
+      + " ÀÁÂÃÄÅÆÇÈÉ ÊËÌÍÎÏÐÑÒÓÔ ÕÖØÙÚÛÜÝÞÿ"
+      + " àáâãäåæçèé êëìíîïðñòóô õöøùúûüýþÿ"
+      + " !#$%&'()*+,-./:;<=>?@[^_z{|}~"
+      + " uvw wW gq9 2z 5s il17|!j oO08 `' ;:,. m nn rn {[()]}u");
 
   private JComboBox fontComboBox;
   private JComboBox size;
@@ -39,7 +55,9 @@ public class DropDown extends JFrame implements ActionListener {
   private JButton bold = new JButton("B");
   private JButton italic = new JButton ("I");
   private JButton underline = new JButton("U");
+  private JButton plain = new JButton("P");
  
+
 
   public DropDown() { 
     setTitle("Font Chooser");
@@ -49,11 +67,21 @@ public class DropDown extends JFrame implements ActionListener {
         System.exit(0);
       }
     });
-
+    
+    fontLabel.setLineWrap(true);
+    fontLabel.setWrapStyleWord(true);
+   
+    
+    //Making a scroll pane-- this does not work!!!!!!!!!!!!!
+    JScrollPane scroll = new JScrollPane(fontLabel);
+    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    scroll.setVisible(true);
+  
+   
+    //Dropdown menu for the font family 
     fontComboBox = new JComboBox();
     fontComboBox.setEditable(true);
     fontComboBox.addActionListener(this);
-    
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     String[] names = ge.getAvailableFontFamilyNames();
     for ( int i=0; i<names.length; i++ )
@@ -61,10 +89,10 @@ public class DropDown extends JFrame implements ActionListener {
        fontComboBox.addItem(names[i]);
     }
 
+    //dropdown menu for font size
     size = new JComboBox();
     size.setEditable(true);
     size.addActionListener(this);
-    
     size.addItem(8);
     size.addItem(9);
     size.addItem(10);
@@ -80,49 +108,54 @@ public class DropDown extends JFrame implements ActionListener {
     size.addItem(48);
     size.addItem(72);
    
+    //adding action listeners to buttons
     Button.addActionListener(new ButtonListener());
     BButton.addActionListener(new ButtonListener());
     bold.addActionListener(new ButtonListener());
     italic.addActionListener(new ButtonListener());
     underline.addActionListener(new ButtonListener());
+    plain.addActionListener(new ButtonListener());
    
-    
+    //laying out the buttons and dropdown menus
     setLayout(null);
     JPanel p = new JPanel();
     JPanel s = new JPanel();
     JPanel f = new JPanel();
     JPanel b = new JPanel();
     JPanel B = new JPanel();
-    
     JPanel I = new JPanel();
     JPanel U = new JPanel();
+    JPanel P = new JPanel();
     p.add(fontComboBox);
     s.add(size);
     f.add(Button);
-    
     b.add(BButton);
     B.add(bold);
     I.add(italic);
     U.add(underline);
-    getContentPane().add(B);
-    B.setBounds(600,0,100,100);
+    P.add(plain);
+    getContentPane().add(P);
+    getContentPane().add(B);  
     getContentPane().add(I);
     getContentPane().add(U);
-    
-    I.setBounds(350,100,50,50);
-    U.setBounds(400,100,50,50);
     getContentPane().add(p);
-    p.setBounds(200, 100, 300, 100);
     getContentPane().add(s);
-    s.setBounds(380, 100, 300,200);
     getContentPane().add(f);
-    f.setBounds(800,100,100,50);
     getContentPane().add(b);
-    b.setBounds(1010, 100, 100, 50);
     getContentPane().add(fontLabel);
+    P.setBounds(775,100,65,50);
+    B.setBounds(580,100,65,50);
+    I.setBounds(645,100,65,50);
+    U.setBounds(710,100,65,50);
+    p.setBounds(200, 100, 300, 50);
+    s.setBounds(350, 100, 350,50);
+    f.setBounds(860,100,150,50);
+    b.setBounds(1010, 100, 150, 50);
     fontLabel.setBounds(400,200,700,500);
+   
   }
-
+  
+  //listeners for dropdown menus
   public void actionPerformed(ActionEvent evt) {
     JComboBox source = (JComboBox) evt.getSource();
 
@@ -134,17 +167,23 @@ public class DropDown extends JFrame implements ActionListener {
     }
     if (source == size)
     {
-    	int Size = (int) source.getSelectedItem();
-    	fontLabel.setFont(new Font(tfont,Font.PLAIN,Size));
-    	tsize = Size;
+    	Integer Size = (Integer) source.getSelectedItem();
+    	if (Size != null) 
+    	{
+    		fontLabel.setFont(new Font(tfont,Font.PLAIN,Size));
+    		tsize = Size;
+    	}
     }
   }
  
   public static void main(String[] args) {
     JFrame frame = new DropDown();
     frame.show();
+
   }
 
+  
+  //listeners for buttons
   private class ButtonListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	    	  JButton src = (JButton) e.getSource();
@@ -164,14 +203,26 @@ public class DropDown extends JFrame implements ActionListener {
 	    	    }
 	    	    if (src == bold)
 	    	    {
-	    	    	fontLabel.setFont(getFont().deriveFont(Font.BOLD));
+	    	    	fontLabel.setFont(new Font(tfont, Font.BOLD, tsize));
+	    	    }
+	    	    if (src == italic)
+	    	    {
+	    	    	fontLabel.setFont(new Font(tfont, Font.ITALIC, tsize));
+	    	    }
+	    	    if (src == underline)
+	    	    {
+	    	    	Font font1 = fontLabel.getFont();
+	    	    	Map attributes = font1.getAttributes();
+	    	    	attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+	    	    	fontLabel.setFont(font1.deriveFont(attributes));
+	    	    }
+	    	    if (src == plain)
+	    	    {
+	    	    	fontLabel.setFont(new Font(tfont, Font.PLAIN, tsize));
 	    	    }
 	  
-}
+
   }
 }
-           
-        
-           
-
+  }
 
